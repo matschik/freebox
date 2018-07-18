@@ -1,0 +1,13 @@
+{
+  "app": {
+    "app_id": "fbx.my-node-app-example",
+    "app_name": "NodeJS App example",
+    "app_version": "1.0.0",
+    "device_name": "My PC",
+    "app_token": null
+  },
+  "connection": {
+    "api_domain": null,
+    "https_port": null
+  }
+}
