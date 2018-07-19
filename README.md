@@ -13,7 +13,7 @@ $ npm install freebox-sdk-js
 ```
 
 ## Usage
-After the configuration setup, you can request your Freebox server as the following.
+After the configuration setup, you can request your Freebox server as the following.  
 Your best friend is the official API documentation: https://dev.freebox.fr/sdk/os
 
 Example:
