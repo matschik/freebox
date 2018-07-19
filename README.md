@@ -45,7 +45,7 @@ const Freebox = require('freebox-sdk-js');
 
 ## Setup configuration
 
-### Server
+### For a NodeJS server
 
 Our goal here is to complete the configuration to be able to connect securely to your Freebox server from anywhere.
 
@@ -148,7 +148,7 @@ const Freebox = require('freebox-sdk-js');
 */
 ```
 
-### Browser
+### For Browser
 For security purpose, I recommand to use it **only** if you host your JavaScript application in a **local** web server. You need an `app_token` corresponding at your `app_id` (you can get it by following the NodeJS guide above).
 
 ```js
