@@ -4,14 +4,6 @@
 
 Simplify Freebox login process and build a remote secure HTTPS connection to your Freebox server for your Javascript applications. You just have to do some configuration for your app's first login.
 
-## Contents
-
-- [Prerequisities](#prerequisities)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [License](#license)
-
 ## Prerequisities
 - Freebox Revolution or newer
 
@@ -20,9 +12,40 @@ Simplify Freebox login process and build a remote secure HTTPS connection to you
 $ npm install freebox-sdk-js
 ```
 
-## Configuration
+## Usage
+After the configuration setup, you can request your Freebox server as the following.
+Your best friend is the official API documentation: https://dev.freebox.fr/sdk/os
 
-### For NodeJS
+Example:
+```js
+const Freebox = require('freebox-sdk-js');
+
+(async () => {
+    const freebox = new Freebox();
+    await freebox.login();
+
+    // Get the current Wi-Fi global configuration: https://dev.freebox.fr/sdk/os/wifi
+    const response = await freebox.request({
+        method: 'get',
+        url: '/api/v2/wifi/config/'
+    });
+
+    await freebox.logout();
+
+    const wifiConfig = response.data.result;
+    console.log(wifiConfig);
+})();
+/*
+{
+    "enabled": true,
+    "mac_filter_state": "blacklist"
+}
+*/
+```
+
+## Setup configuration
+
+### Server
 
 Our goal here is to complete the configuration to be able to connect securely to your Freebox server from anywhere.
 
@@ -125,7 +148,7 @@ const Freebox = require('freebox-sdk-js');
 */
 ```
 
-### For Browser
+### Browser
 For security purpose, I recommand to use it **only** if you host your JavaScript application in a **local** web server. You need an `app_token` corresponding at your `app_id` (you can get it by following the NodeJS guide above).
 
 ```js
@@ -133,7 +156,7 @@ For security purpose, I recommand to use it **only** if you host your JavaScript
 var Freebox = require('freebox-sdk-js');
 
 // You will have to complete the missing fields
-// Check your console for the first login
+// Check your console while doing the first login
 var config = {
   "app": {
     "app_id": "fbx.my-browser-app-example",
@@ -169,16 +192,16 @@ var baseURL = 'http://mafreebox.freebox.fr';
 })();
 ```
 
-## Usage
-### Using a custom configuration file path
+## FAQ
+### I want to use a custom configuration file path
 ```js
 const Freebox = require('freebox-sdk-js');
 
-const configFilePath =  __dirname + '/path/to/config/file.json';
-const freebox = new Freebox({ config: configFilePath });
+const configPath =  __dirname + '/path/to/config/file.json';
+const freebox = new Freebox({ config: configPath });
 ```
 
-### Using a configuration object
+### I want to use a configuration object
 ```js
 const Freebox = require('freebox-sdk-js');
 
@@ -199,37 +222,13 @@ const config = {
 const freebox = new Freebox({ config });
 ```
 
-### Using a custom domain to your Freebox Server
+### For the first login, I want to use my custom domain to access my Freebox Server
+It's useful to access your Freebox server remotely to get configuration's `connection` part.
+Once `connection` part filled, you can remove `baseURL` option.
+By default, `baseURL` is the local domain: `"http://mafreebox.free.fr"`.
 ```js
 const Freebox = require('freebox-sdk-js');
 const freebox = new Freebox({ baseURL: "https://mydomain.freeboxos.fr:3129" });
-```
-
-### Request your Freebox
-```js
-const Freebox = require('freebox-sdk-js');
-
-(async () => {
-    const freebox = new Freebox();
-    await freebox.login();
-
-    // Get the current Wi-Fi global configuration: https://dev.freebox.fr/sdk/os/wifi
-    const response = await freebox.request({
-        method: 'get',
-        url: '/api/v2/wifi/config/'
-    });
-
-    await freebox.logout();
-
-    const wifiConfig = response.data.result;
-    console.log(wifiConfig);
-})();
-/*
-{
-    "enabled": true,
-    "mac_filter_state": "blacklist"
-}
-*/
 ```
 
 ## License
