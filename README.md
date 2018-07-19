@@ -99,7 +99,7 @@ const Freebox = require('freebox-sdk-js');
     const downloads = response.data.result;
     console.log(downloads);
 })();
-/* Console result:
+/*
 [{ rx_bytes: 1520000000,
     tx_bytes: 0,
     download_dir: 'L0Rpc3F1ZJBkdXIvKkFMTA==',
@@ -175,11 +175,7 @@ var baseURL = 'http://mafreebox.freebox.fr';
 const Freebox = require('freebox-sdk-js');
 
 const configFilePath =  __dirname + '/path/to/config/file.json';
-
-(async () => {
-    const freebox = new Freebox({ config: configFilePath });
-    await freebox.login();
-})();
+const freebox = new Freebox({ config: configFilePath });
 ```
 
 ### Using a configuration object
@@ -200,22 +196,13 @@ const config = {
   }
 };
 
-(async () => {
-    const freebox = new Freebox({ config });
-    await freebox.login();
-})();
+const freebox = new Freebox({ config });
 ```
 
 ### Using a custom domain to your Freebox Server
 ```js
 const Freebox = require('freebox-sdk-js');
-
-const freeboxURL = 'https://mydomain.freeboxos.fr:3129';
-
-(async () => {
-    const freebox = new Freebox({ baseURL: freeboxURL });
-    await freebox.login();
-})();
+const freebox = new Freebox({ baseURL: "https://mydomain.freeboxos.fr:3129" });
 ```
 
 ### Request your Freebox
@@ -237,7 +224,7 @@ const Freebox = require('freebox-sdk-js');
     const wifiConfig = response.data.result;
     console.log(wifiConfig);
 })();
-/* Console result:
+/*
 {
     "enabled": true,
     "mac_filter_state": "blacklist"
