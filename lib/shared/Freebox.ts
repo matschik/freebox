@@ -1,7 +1,6 @@
 import { Agent as HttpsAgent } from "https";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import appRoot = require("app-root-path");
-import ora = require("ora");
 import path = require("path");
 
 import {
@@ -136,10 +135,12 @@ export default class Freebox implements IFreebox {
 
     // Set connection
     const hasAPIDomain =
-    this.config.connection && this.config.connection.api_domain &&
+      this.config.connection &&
+      this.config.connection.api_domain &&
       typeof this.config.connection.api_domain === "string";
     const hasHTTPSPort =
-    this.config.connection && this.config.connection.https_port &&
+      this.config.connection &&
+      this.config.connection.https_port &&
       typeof this.config.connection.https_port === "number";
     const hasConnection = hasAPIDomain && hasHTTPSPort;
     if (!hasConnection) {
@@ -184,16 +185,15 @@ export default class Freebox implements IFreebox {
         log.warn("Missing app_token in your Freebox Config.");
       }
 
-      const spinner = ora(
+      log.info(
         "Please check your Freebox Server screen to authorize application access and get your app_token."
       );
-      spinner.start();
 
       try {
         this.config.app.app_token = await this.register(this.config.app);
-        spinner.succeed("New Freebox application registered with success !");
+        log.success("New Freebox application registered with success !");
       } catch (err) {
-        spinner.fail(
+        console.error(
           "Failed to register your application to get your application token."
         );
         throw new Error(err);
