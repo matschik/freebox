@@ -1,7 +1,6 @@
 import { Agent as HttpsAgent } from "https";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import appRoot = require("app-root-path");
-import path = require("path");
 
 import {
   stringifyFreeboxConnection,
@@ -157,7 +156,6 @@ export default class Freebox implements IFreebox {
       };
 
       if (this.configType === "path") {
-        this.config = await this.getConfigFromConfigFile();
         await this.updateConfigFile();
         log.success(
           "Freebox Config file updated with success: 'connection' part updated."
