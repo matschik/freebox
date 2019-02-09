@@ -1,10 +1,8 @@
 // https://dev.freebox.fr/sdk/os/login/
 import { AxiosInstance, AxiosRequestConfig } from "axios";
-import { FbxResponse } from "../../shared/Freebox";
+import { FbxResponse } from "../shared/Freebox";
 import { createHmac } from "crypto";
-import request from "../request";
-
-//@TODO if HTTPS, include certificate into axiosInstance
+import request from "../shared/request";
 
 export interface Session {
   session_token: string;
@@ -94,7 +92,7 @@ export async function openSession(
 
   const requestConfig: AxiosRequestConfig = {
     method: "post",
-    url: "/api/v4/login/session/",
+    url: "login/session/",
     data: sessionStart
   };
 
@@ -107,7 +105,7 @@ export async function getChallenge(
 ): Promise<Response.getChallenge> {
   const requestConfig: AxiosRequestConfig = {
     method: "get",
-    url: "/api/v4/login"
+    url: "login/"
   };
 
   const response = await request(requestConfig, axiosInstance);
@@ -120,7 +118,7 @@ export async function requestAuthorization(
 ): Promise<Response.requestAuthorization> {
   const requestConfig: AxiosRequestConfig = {
     method: "post",
-    url: "/api/v4/login/authorize/",
+    url: "login/authorize/",
     data: appConfig
   };
 
@@ -136,7 +134,7 @@ export async function trackAuthorizationProgress(
 
   const requestConfig: AxiosRequestConfig = {
     method: "get",
-    url: `/api/v4/login/authorize/${track_id}`
+    url: `login/authorize/${track_id}`
   };
 
   const response = await request(requestConfig, axiosInstance);

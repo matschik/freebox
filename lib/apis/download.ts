@@ -1,6 +1,6 @@
 // https://dev.freebox.fr/sdk/os/
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import request from "../request";
+import request from "../shared/request";
 
 interface Discovery {
   uid: string;
@@ -17,12 +17,12 @@ export interface DiscoveryResponse extends AxiosResponse {
   data: Discovery;
 }
 
-export async function discovery(
+export async function getAll(
   axiosInstance?: AxiosInstance | AxiosRequestConfig
 ): Promise<DiscoveryResponse> {
   const requestConfig: AxiosRequestConfig = {
     method: "get",
-    url: "/api_version"
+    url: "api_version"
   };
 
   const response = await request(requestConfig, axiosInstance);
