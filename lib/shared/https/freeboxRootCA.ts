@@ -1,3 +1,4 @@
+// HTTPS Access: https://dev.freebox.fr/sdk/os/#https-access
 const freeboxRootCA = `
 -----BEGIN CERTIFICATE-----
 MIIFmjCCA4KgAwIBAgIJAKLyz15lYOrYMA0GCSqGSIb3DQEBCwUAMFoxCzAJBgNV

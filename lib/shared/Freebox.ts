@@ -2,13 +2,7 @@ import { Agent as HttpsAgent } from "https";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import appRoot = require("app-root-path");
 
-import {
-  stringifyFreeboxConnection,
-  log,
-  readFile,
-  writeFile,
-  localURL
-} from "./utils";
+import { log, readFile, writeFile, localURL } from "./utils";
 import freeboxRootCA from "./https/freeboxRootCA";
 import {
   openSession,
@@ -18,8 +12,8 @@ import {
   SessionStart,
   Response,
   Session
-} from "../apis/Login";
-import { discovery, DiscoveryResponse } from "../apis/Discovery";
+} from "../apis/login";
+import { discovery, Discovery, DiscoveryResponse } from "../apis/discovery";
 
 interface App {
   app_id: string;
@@ -29,14 +23,9 @@ interface App {
   app_token?: string;
 }
 
-export interface Connection {
-  api_domain: string;
-  https_port: number;
-}
-
 interface FreeboxConfig {
   app: App;
-  connection: Connection;
+  discovery: Discovery;
 }
 
 export interface FbxResponse extends AxiosResponse {
@@ -89,8 +78,9 @@ export default class Freebox implements IFreebox {
     internal_error: "Internal error"
   };
   private baseURL: string = this.localURL;
+  private axiosIsInitialized = false;
   private axios: AxiosInstance = axios.create();
-  private configType: string;
+  private configMethod: string;
   session?: Session;
   configPath?: string;
   config?: FreeboxConfig;
@@ -105,24 +95,27 @@ export default class Freebox implements IFreebox {
       this.config = config;
       this.baseURL = baseURL || this.localURL;
 
-      this.configType = "json";
+      this.configMethod = "json";
     } else if (typeof config === "string") {
       this.configPath = config;
-      this.configType = "path";
+      this.configMethod = "path";
     } else {
+      // Default: use root path
       this.configPath = this.configRootPath;
-      this.configType = "path"; //rootPath
+      this.configMethod = "path"; //rootPath
     }
   }
 
   private async initialize() {
     // Set this.config for config file case
-    if (this.configType === "path" && !this.config) {
+    if (this.configMethod === "path" && !this.config) {
       this.config = await this.getConfigFromConfigFile();
     }
 
     // Set Axios instance to prepare following requests
-    if (!this.axios) await this.setAxios();
+    if (!this.axiosIsInitialized) {
+      await this.setAxios();
+    }
   }
 
   public async login(): Promise<Session> {
@@ -132,35 +125,37 @@ export default class Freebox implements IFreebox {
       throw new Error("Missing Freebox Configuration");
     }
 
-    // Set connection
+    // Set discovery
     const hasAPIDomain =
-      this.config.connection &&
-      this.config.connection.api_domain &&
-      typeof this.config.connection.api_domain === "string";
+      this.config.discovery &&
+      this.config.discovery.api_domain &&
+      typeof this.config.discovery.api_domain === "string";
     const hasHTTPSPort =
-      this.config.connection &&
-      this.config.connection.https_port &&
-      typeof this.config.connection.https_port === "number";
-    const hasConnection = hasAPIDomain && hasHTTPSPort;
-    if (!hasConnection) {
-      if (this.configType === "path") {
-        log.warn("Missing 'connection' part in your Freebox Config file.");
-      } else if (this.configType === "json") {
-        log.warn("Missing 'connection' part in your Freebox Config.");
+      this.config.discovery &&
+      this.config.discovery.https_port &&
+      typeof this.config.discovery.https_port === "number";
+    const hasDiscovery = hasAPIDomain && hasHTTPSPort;
+    if (!hasDiscovery) {
+      if (this.configMethod === "path") {
+        log.warn("Missing 'discovery' part in your Freebox Config file.");
+      } else if (this.configMethod === "json") {
+        log.warn("Missing 'discovery' part in your Freebox Config.");
       }
-      const { api_domain, https_port } = await this.getConnection();
+      const res: DiscoveryResponse = await discovery(this.axios);
+      const discoveryData: Discovery = res.data;
 
-      this.config.connection = {
-        api_domain,
-        https_port
-      };
+      if (!discoveryData.https_available) {
+        throw new Error("HTTPS is not available in your Freebox Server.");
+      }
 
-      if (this.configType === "path") {
+      this.config.discovery = discoveryData;
+
+      if (this.configMethod === "path") {
         await this.updateConfigFile();
         log.success(
-          "Freebox Config file updated with success: 'connection' part updated."
+          "Freebox Config file updated with success: 'discovery' part updated."
         );
-      } else if (this.configType === "json") {
+      } else if (this.configMethod === "json") {
         log.info(
           `Please update your configuration object with the following for next connections: \n ${JSON.stringify(
             this.config,
@@ -177,9 +172,9 @@ export default class Freebox implements IFreebox {
       this.config.app.app_token &&
       typeof this.config.app.app_token === "string";
     if (!hasAppToken) {
-      if (this.configType === "path") {
+      if (this.configMethod === "path") {
         log.warn("Missing app_token in your Freebox Config file.");
-      } else if (this.configType === "json") {
+      } else if (this.configMethod === "json") {
         log.warn("Missing app_token in your Freebox Config.");
       }
 
@@ -194,10 +189,10 @@ export default class Freebox implements IFreebox {
         console.error(
           "Failed to register your application to get your application token."
         );
-        throw new Error(err);
+        throw err;
       }
 
-      if (this.configType === "json") {
+      if (this.configMethod === "json") {
         log.warn(
           `Please update your configuration object with the following for next connections: \n ${JSON.stringify(
             this.config,
@@ -205,7 +200,7 @@ export default class Freebox implements IFreebox {
             2
           )}`
         );
-      } else if (this.configType === "path") {
+      } else if (this.configMethod === "path") {
         await this.updateConfigFile();
         log.success(
           "Freebox Config file updated with success: app_token added."
@@ -223,10 +218,7 @@ export default class Freebox implements IFreebox {
     const sessionStart: SessionStart = {
       app_id: this.config.app.app_id,
       app_version: this.config.app.app_version || "",
-      password: {
-        app_token: this.config.app.app_token || "",
-        challenge
-      }
+      password: { app_token: this.config.app.app_token || "", challenge }
     };
 
     // Session opening
@@ -297,23 +289,6 @@ export default class Freebox implements IFreebox {
     return app_token;
   }
 
-  private async getConnection(): Promise<Connection> {
-    await this.initialize();
-    const res: DiscoveryResponse = await discovery(this.axios);
-    const { https_available, api_domain, api_base_url, https_port } = res.data;
-
-    if (!https_available) {
-      throw new Error("HTTPS is not available in your Freebox Server.");
-    }
-
-    const connection: Connection = {
-      api_domain,
-      https_port
-    };
-
-    return connection;
-  }
-
   private getAuthorizationStatus(track_id: number): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       const self = this;
@@ -361,7 +336,6 @@ export default class Freebox implements IFreebox {
       baseURL: this.baseURL,
       headers: {}
     };
-
     // Set Freebox Session header
     if (this.session && this.session.session_token) {
       instanceConfig.headers["X-Fbx-App-Auth"] = this.session.session_token;
@@ -369,14 +343,19 @@ export default class Freebox implements IFreebox {
 
     // Secure HTTPS configuration
     // https://engineering.circle.com/https-authorized-certs-with-node-js-315e548354a2
-    if (this.config && this.config.connection) {
-      instanceConfig.httpsAgent = new HttpsAgent({ ca: freeboxRootCA });
-      instanceConfig.baseURL = stringifyFreeboxConnection(
-        this.config.connection
-      );
+    if (this.config && this.config.discovery) {
+      instanceConfig.httpsAgent = new HttpsAgent({
+        ca: freeboxRootCA
+      });
+      instanceConfig.baseURL = `https://${this.config.discovery.api_domain}:${
+        this.config.discovery.https_port
+      }${
+        this.config.discovery.api_base_url
+      }v${this.config.discovery.api_version.slice(0, 1).trim()}`;
     }
 
     this.axios = axios.create(instanceConfig);
+    this.axiosIsInitialized = true;
     return this.axios;
   }
 
