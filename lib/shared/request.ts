@@ -19,7 +19,7 @@ export default async function request(
     }
   }
 
-  if(!instance.defaults.baseURL){
+  if (!instance.defaults.baseURL) {
     instance.defaults.baseURL = localURL;
   }
 

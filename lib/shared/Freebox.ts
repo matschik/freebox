@@ -164,6 +164,9 @@ export default class Freebox implements IFreebox {
           )}`
         );
       }
+
+      // Update Axios config to update discovery part
+      await this.setAxios();
     }
 
     // Register application to get app_token
@@ -179,14 +182,14 @@ export default class Freebox implements IFreebox {
       }
 
       log.info(
-        "Please check your Freebox Server screen to authorize application access and get your app_token."
+        "Please check your Freebox Server screen and authorize application access to get your app_token."
       );
 
       try {
         this.config.app.app_token = await this.register(this.config.app);
         log.success("New Freebox application registered with success !");
       } catch (err) {
-        console.error(
+        log.error(
           "Failed to register your application to get your application token."
         );
         throw err;
@@ -353,7 +356,6 @@ export default class Freebox implements IFreebox {
         this.config.discovery.api_base_url
       }v${this.config.discovery.api_version.slice(0, 1).trim()}`;
     }
-
     this.axios = axios.create(instanceConfig);
     this.axiosIsInitialized = true;
     return this.axios;
