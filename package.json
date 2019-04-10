@@ -1,11 +1,10 @@
 {
   "name": "freebox-sdk-js",
-  "version": "0.7.2",
-  "description": "",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "version": "0.7.4",
+  "description": "Fast and secure Freebox OS requests.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "start": "npm run build && node test.js",
     "build": "rimraf './dist' && tsc",
     "format": "prettier --write \"lib/**/*.ts\""
   },
