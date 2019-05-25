@@ -156,6 +156,16 @@ Default: `"NodeJS"`
 
 The name of the device on which the app will be used.
 
+### Instance
+
+#### .register()
+
+Register your app to the Freebox. It requires a manual input on Freebox LCD screen.
+Returns an `Object` with all the informations needed to login and request your Freebox.
+
+#### .discovery()
+Returns an `Object` (AxiosResponse) containing the API information of the Freebox.
+
 ## API: Freebox
 
 Then the app will need to open a session to get an auth_token. The app will then be authenticated by adding this session_token in HTTP headers of the following requests. The validity of the auth_token is limited in time and the app will have to renew this auth_token once in a while.
@@ -212,6 +222,21 @@ Type: `String`<br>
 Optional
 
 Same `app_version` used in TokenRequest (using `FreeboxRegister` class) to get the app_token.
+
+### Instance
+
+#### .login()
+
+Login to a Freebox by opening a session.
+
+#### .logout()
+
+Close the current session.
+
+#### .request(object)
+
+Request the Freebox passing an Axios request config object (https://github.com/axios/axios#request-config).
+
 
 ## License
 
