@@ -1,4 +1,4 @@
-# Freebox for Node.js
+# Freebox for Node.js [![Build Status](https://travis-ci.org/matschik/freebox-sdk-js.svg?branch=next)](https://travis-ci.org/matschik/freebox-sdk-js)
 
 > Simple authentification and secure requests to your Freebox OS server
 
