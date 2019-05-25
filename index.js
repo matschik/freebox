@@ -335,3 +335,5 @@ module.exports = {
   FreeboxRegister,
   Freebox,
 };
+
+module.exports.default = Freebox;
