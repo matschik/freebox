@@ -1,6 +1,6 @@
 {
   "name": "freebox",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "description": "Simple authentification and secure requests to your Freebox OS server",
   "license": "MIT",
   "repository": "Matschik/freebox",
