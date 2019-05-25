@@ -235,7 +235,8 @@ Close the current session.
 
 #### .request(object)
 
-Request the Freebox passing an Axios request config object (https://github.com/axios/axios#request-config).
+Requests the Freebox by passing an object `AxiosRequestConfig` (https://github.com/axios/axios#request-config).
+Returns an `Object` (AxiosResponse).
 
 
 ## License
