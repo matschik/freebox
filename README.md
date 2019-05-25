@@ -28,13 +28,12 @@ Just one time per app !
 
 **Note:** You must be connected to your Freebox local network to register an app.
 
-<p>
-	<br>
-  <figure align="center">
+<p align="center">
+  <br>
     <img src="freebox.gif" width="500">
-    <figcaption>Freebox server LCD screen to authorize your app access.</figcaption>
-  </figure>
 	<br>
+    <i>Freebox server LCD screen to authorize your app access.</i>
+  <br>
 </p>
 
 ```js
