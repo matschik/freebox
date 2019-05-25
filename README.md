@@ -25,8 +25,10 @@ _If you tested on your Freebox and the device model is not in this list, please 
 ### Register your app
 
 Just one time per app !
+You must be connected to your Freebox local network to register an app.
+Go to https://mafreebox.freebox.fr. If it's working, you are on your Freebox local network.
 
-**Note:** You must be connected to your Freebox local network to register an app.
+**Note:** You can not register an app using a remote HTTPS freebox server domain like `r42bhm9p.fbxos.fr`.
 
 <p align="center">
   <br>
