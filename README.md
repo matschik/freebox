@@ -168,7 +168,7 @@ Returns an `Object` (AxiosResponse) containing the API information of the Freebo
 
 ## API: Freebox
 
-Then the app will need to open a session to get an auth_token. The app will then be authenticated by adding this session_token in HTTP headers of the following requests. The validity of the auth_token is limited in time and the app will have to renew this auth_token once in a while.
+The app need to open a session to get an auth_token. The app will then be authenticated by adding this session_token in HTTP headers of the following requests. The validity of the auth_token is limited in time and the app will have to renew this auth_token once in a while.
 
 ### Freebox([appRegistered])
 
@@ -194,7 +194,7 @@ This token has been associated with a set of default permissions.
 #### api_domain
 
 Type: `String`<br>
-Default: `"http://mafreebox.freebox.fr"`
+Default: `"https://mafreebox.freebox.fr"`
 
 The domain to use in place of hardcoded Freebox IP.
 
@@ -221,7 +221,7 @@ The current API version on the Freebox.
 Type: `String`<br>
 Optional
 
-Same `app_version` used in TokenRequest (using `FreeboxRegister` class) to get the app_token.
+Same `app_version` used in TokenRequest (using `FreeboxRegister` class) to get the `app_token`.
 
 ### Instance
 
