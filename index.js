@@ -75,16 +75,17 @@ class FreeboxRegister {
   }
 
   async register({ silent = false } = {}) {
-    // Ping
     let discoveryRes;
     try {
       discoveryRes = await this.discovery();
     } catch (err) {
       console.error(
+        "\x1b[31m%s\x1b[0m",
         `Error: You are probably not connected to your Freebox network (check "${FREEBOX_LOCAL_URL}").`
       );
       throw err;
     }
+
     const {
       api_domain,
       https_port,
@@ -101,7 +102,8 @@ class FreeboxRegister {
 
     if (!silent) {
       console.info(
-        `Please check your Freebox Server screen and authorize application access to get your app registered.`
+        "\x1b[36m%s\x1b[0m",
+        `Please check your Freebox Server LCD screen and authorize application access to register your app.`
       );
     }
     await this.getAuthorizationStatus(track_id);
@@ -116,6 +118,7 @@ class FreeboxRegister {
 
     if (!silent) {
       console.info(
+        "\x1b[32m%s\x1b[0m",
         `Your app has been granted access !\nSave safely those following informations secret to connect to your Freebox API:`
       );
       console.info(access);
