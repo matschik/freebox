@@ -1,4 +1,4 @@
-const { FreeboxRegister, Freebox } = require(".");
+const { FreeboxRegister } = require(".");
 
 describe("FreeboxRegister default instance", () => {
   const freeboxRegister = new FreeboxRegister();

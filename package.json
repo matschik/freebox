@@ -16,7 +16,7 @@
     "index.d.ts"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "jest && xo",
     "format": "prettier --write \"**.js\""
   },
   "keywords": [
@@ -30,6 +30,23 @@
   },
   "devDependencies": {
     "jest": "^24.8.0",
-    "prettier": "^1.17.1"
+    "prettier": "^1.17.1",
+    "xo": "^0.24.0"
+  },
+  "xo": {
+    "prettier": true,
+    "rules": {
+      "camelcase": 0,
+      "no-else-return": 0,
+      "no-async-promise-executor": 0
+    },
+    "overrides": [
+      {
+        "files": "test.js",
+        "rules": {
+          "no-undef": 0
+        }
+      }
+    ]
   }
 }
