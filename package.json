@@ -1,19 +1,23 @@
 {
-  "name": "freebox-sdk-js",
-  "version": "0.7.4",
-  "description": "Fast and secure Freebox OS requests.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "name": "freebox",
+  "version": "1.0.0",
+  "description": "Simple authentification and secure requests to your Freebox OS server",
+  "license": "MIT",
+  "repository": "Matschik/freebox",
+  "author": {
+    "name": "Mathieu Schimmerling",
+    "email": "mathieu.schimmerling@protonmail.com"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
   "scripts": {
-    "build": "rimraf './dist' && tsc",
-    "format": "prettier --write \"lib/**/*.ts\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Matschik/freebox-sdk"
-  },
-  "bugs": {
-    "url": "https://github.com/Matschik/freebox-sdk/issues"
+    "test": "jest && xo",
+    "format": "prettier --write \"**.js\""
   },
   "keywords": [
     "freebox",
@@ -21,21 +25,28 @@
     "sdk",
     "freeboxos"
   ],
-  "author": "Mathieu Schimmerling <mathieu.schimmerling@protonmail.com>",
-  "license": "MIT",
   "dependencies": {
-    "app-root-path": "^2.2.1",
     "axios": "^0.18.0"
   },
   "devDependencies": {
-    "@types/app-root-path": "^1.2.4",
-    "@types/node": "^10.5.1",
-    "prettier": "^1.13.7",
-    "rimraf": "^2.6.2",
-    "ts-node": "^7.0.0",
-    "typescript": "^2.9.2"
+    "jest": "^24.8.0",
+    "prettier": "^1.17.1",
+    "xo": "^0.24.0"
   },
-  "engines": {
-    "node": ">=8.0.0"
+  "xo": {
+    "prettier": true,
+    "rules": {
+      "camelcase": 0,
+      "no-else-return": 0,
+      "no-async-promise-executor": 0
+    },
+    "overrides": [
+      {
+        "files": "test.js",
+        "rules": {
+          "no-undef": 0
+        }
+      }
+    ]
   }
 }
