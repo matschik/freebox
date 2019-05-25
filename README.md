@@ -2,12 +2,6 @@
 
 > Simple authentification and secure requests to your Freebox OS server
 
-<p align="center">
-	<br>
-	<img src="screenshot.svg" width="500">
-	<br>
-</p>
-
 ## Why ?
 
 From Freebox OS API documentation (https://dev.freebox.fr/sdk/os), register and authentification processes are quite difficult to set up. This little library simplify and automate all the hard authentification stuff to being able to request your Freebox from anywhere using HTTPS protocol.
@@ -22,11 +16,26 @@ $ npm install freebox
 
 Official Freebox OS API Documentation: https://dev.freebox.fr/sdk/os
 
+Tested on:
+
+- Freebox Revolution V6.
+
+_If you tested on your Freebox and the device model is not in this list, please open an issue and I will add it in the list._
+
 ### Register your app
 
 Just one time per app !
 
 **Note:** You must be connected to your Freebox local network to register an app.
+
+<p>
+	<br>
+  <figure align="center">
+    <img src="freebox.gif" width="500">
+    <figcaption>Freebox server LCD screen to authorize your app access.</figcaption>
+  </figure>
+	<br>
+</p>
 
 ```js
 const { FreeboxRegister } = require("freebox");
@@ -39,14 +48,16 @@ async function main() {
     device_name: "My cool PC",
   });
 
-  await freeboxRegister.register();
+  // Obtaining an app_token & everything you need
+  // https://dev.freebox.fr/sdk/os/login/
+  const access = await freeboxRegister.register();
 }
 
 main().catch(err => console.error(err));
 
 /*
 
-Please check your Freebox Server screen and authorize application access to get your app registered.
+Please check your Freebox Server LCD screen and authorize application access to register your app.
 
 Your app has been granted access !
 
@@ -78,14 +89,19 @@ async function main() {
     api_version: "6.0",
   });
 
+  // Open a session
+  // https://dev.freebox.fr/sdk/os/login/
   await freebox.login();
 
+  // Get the current Wi-Fi global configuration
+  // https://dev.freebox.fr/sdk/os/wifi
   const response = await freebox.request({
     method: "GET",
     url: "wifi/config",
   });
 
-  //
+  // Close the current session
+  // https://dev.freebox.fr/sdk/os/login/#closing-the-current-session
   await freebox.logout();
 }
 
@@ -154,41 +170,49 @@ Type: `Object`
 
 Type: `String`
 
-Same app_id used in TokenRequest to get the app_token.
+Same `app_id` used in TokenRequest to get the `app_token`.
 
 #### app_token
 
 Type: `String`
 
-app_token
+Unique `app_token` provided after authorizing the app via `FreeboxRegister` class.
+This token has been associated with a set of default permissions.
 
 #### api_domain
 
 Type: `String`<br>
 Default: `"http://mafreebox.freebox.fr"`
-api_domain
+
+The domain to use in place of hardcoded Freebox IP.
 
 #### https_port
 
 Type: `Number`
 
-https_port
+Port to use for remote https access to the Freebox API.
 
 #### api_base_url
 
 Type: `String`
 
-api_base_url
+The API root path on the HTTP server.
 
 #### api_version
 
 Type: `String`
 
-api_version
+The current API version on the Freebox.
 
 #### app_version
 
-Type: `String`
+Type: `String`<br>
 Optional
 
-api_version
+Same `app_version` used in TokenRequest (using `FreeboxRegister` class) to get the app_token.
+
+## License
+
+[MIT License](LICENSE) Copyright (c) 2019 Mathieu Schimmerling.
+
+Crafted with ❤️
