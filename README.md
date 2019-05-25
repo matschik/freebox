@@ -1,4 +1,4 @@
-# Freebox for Node.js [![Build Status](https://travis-ci.org/matschik/freebox-sdk-js.svg?branch=next)](https://travis-ci.org/matschik/freebox-sdk-js)
+# Freebox for Node.js [![Build Status](https://travis-ci.org/matschik/freebox.svg?branch=next)](https://travis-ci.org/matschik/freebox)
 
 > Simple authentification and secure requests to your Freebox OS server
 
@@ -164,6 +164,7 @@ Register your app to the Freebox. It requires a manual input on Freebox LCD scre
 Returns an `Object` with all the informations needed to login and request your Freebox.
 
 #### .discovery()
+
 Returns an `Object` (AxiosResponse) containing the API information of the Freebox.
 
 ## API: Freebox
@@ -237,7 +238,6 @@ Close the current session.
 
 Requests the Freebox by passing an object `AxiosRequestConfig` (https://github.com/axios/axios#request-config).
 Returns an `Object` (AxiosResponse).
-
 
 ## License
 
