@@ -18,14 +18,14 @@ Official Freebox OS API Documentation: https://dev.freebox.fr/sdk/os
 
 Tested on:
 
-- Freebox Revolution V6.
+- Freebox Revolution V6
 
 _If you tested on your Freebox and the device model is not in this list, please open an issue and I will add it in the list._
 
 ### Register your app
 
 Just one time per app !
-You must be connected to your Freebox local network to register an app.
+You must be connected to your Freebox local network to register an app.<br>
 Go to https://mafreebox.freebox.fr. If it's working, you are on your Freebox local network.
 
 **Note:** You can not register an app using a remote HTTPS freebox server domain like `r42bhm9p.fbxos.fr`.
