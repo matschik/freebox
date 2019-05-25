@@ -31,8 +31,9 @@ Just one time per app !
 <p align="center">
   <br>
     <img src="freebox.gif" width="500">
-	<br>
+    <br>
     <i>Freebox server LCD screen to authorize your app access.</i>
+	<br>
   <br>
 </p>
 
