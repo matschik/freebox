@@ -89,27 +89,55 @@ declare module FreeboxNodeJS {
   }
 
   interface Session {
+    /**
+    A `session_token` is a combination of app_token and a challenge to open a session
+    */
     session_token: string;
     permissions: Permissions;
   }
 
   interface Permissions {
-    settings?: boolean; // Allow modifying the Freebox settings (reading settings is always allowed)
-    contacts?: boolean; // Access to contact list
-    calls?: boolean; // Access to call logs
-    explorer?: boolean; // Access to filesystem
-    downloader?: boolean; // Access to downloader
-    parental?: boolean; // Access to parental control
+    /**
+    Allow modifying the Freebox settings (reading settings is always allowed).
+		*/
+    settings?: boolean;
+
+    /**
+    Access to contact list
+		*/
+    contacts?: boolean;
+
+    /**
+    Access to call logs
+		*/
+    calls?: boolean;
+
+    /**
+    Access to filesystem
+		*/
+    explorer?: boolean;
+
+    /**
+    Access to downloader
+		*/
+    downloader?: boolean;
+
+    /**
+    Access to parental control
+		*/
+    parental?: boolean;
+
     pvr?: boolean;
   }
 
-  declare class FreeboxRegister {
+  class FreeboxRegister {
     constructor(appIdentity?: AppIdentity);
+
     /**
 		Register your app to the Freebox. It requires a manual input on Freebox LCD screen.
     @returns `Object` with all the informations needed to login and request your Freebox.
 		*/
-    register(options?: RegisterOptions): Access;
+    register(options?: RegisterOptions): AppRegistered;
     request(requestConfig: AxiosRequestConfig): AxiosResponse;
     discovery(): AxiosResponse;
     requestAuthorization(): AxiosResponse;
@@ -117,7 +145,7 @@ declare module FreeboxNodeJS {
     trackAuthorizationProgress(track_id: number | string): AxiosResponse;
   }
 
-  declare class Freebox {
+  class Freebox {
     /**
     @returns Freebox instance
 		*/
@@ -138,6 +166,7 @@ declare module FreeboxNodeJS {
     login(): Session;
 
     openSession(sessionStart: SessionStart): AxiosResponse;
+
     getChallenge(): AxiosResponse;
 
     /**
