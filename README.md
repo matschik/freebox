@@ -1,4 +1,4 @@
-# Freebox for Node.js [![Build Status](https://travis-ci.org/matschik/freebox.svg?branch=next)](https://travis-ci.org/matschik/freebox)
+# Freebox for Node.js [![Build Status](https://travis-ci.org/matschik/freebox.svg?branch=next)](https://travis-ci.org/matschik/freebox) [![npm version](https://badge.fury.io/js/freebox.svg)](https://badge.fury.io/js/freebox) [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
 
 > Simple authentification and secure requests to your Freebox OS server
 
