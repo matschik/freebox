@@ -1,12 +1,12 @@
 # Freebox for Node.js 
 
-> Simple authentification and secure requests to your Freebox OS server
+> Simple authentication and secure requests to your Freebox OS server
 
 [![Build Status](https://travis-ci.org/matschik/freebox.svg?branch=next)](https://travis-ci.org/matschik/freebox) [![npm version](https://badge.fury.io/js/freebox.svg)](https://badge.fury.io/js/freebox) [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest) [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
 
 ## Why ?
 
-From Freebox OS API documentation (https://dev.freebox.fr/sdk/os), register and authentification processes are quite difficult to set up. This little library simplify and automate all the hard authentification stuff to being able to request your Freebox from anywhere using HTTPS protocol.
+From Freebox OS API documentation (https://dev.freebox.fr/sdk/os), register and authentication processes are quite difficult to set up. This little library simplify and automate all the hard authentication stuff to being able to request your Freebox from anywhere using HTTPS protocol.
 
 ## Install
 
