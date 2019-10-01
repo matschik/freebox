@@ -31,7 +31,7 @@
   "devDependencies": {
     "jest": "^24.8.0",
     "prettier": "^1.17.1",
-    "xo": "^0.24.0"
+    "xo": "^0.25.3"
   },
   "xo": {
     "prettier": true,
