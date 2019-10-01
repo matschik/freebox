@@ -50,7 +50,7 @@ class FreeboxRegister {
     // Generate defaults required
     const suffixId = `_${Math.random()
       .toString(36)
-      .substr(2, 9)}`;
+      .slice(2, 9)}`;
 
     if (!app_name && !app_id) {
       app_name = `nodejs_app${suffixId}`;
@@ -294,7 +294,7 @@ class Freebox {
       headers: this.headers,
     };
 
-    if (axiosConfig.baseURL.indexOf("https://") > -1) {
+    if (axiosConfig.baseURL.includes("https://")) {
       axiosConfig.httpsAgent = new https.Agent({
         ca: FREEBOX_ROOT_CA,
       });
