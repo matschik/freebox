@@ -10,8 +10,12 @@ From Freebox OS API documentation (https://dev.freebox.fr/sdk/os), register and 
 
 ## Install
 
-```
+```sh
+# Using npm
 $ npm install freebox
+
+# Using yarn
+$ yarn add freebox
 ```
 
 ## Usage
@@ -26,20 +30,11 @@ _If you tested on your Freebox and the device model is not in this list, please 
 
 ### Register your app
 
-Just one time per app !
+Register only once your app !
 You must be connected to your Freebox local network to register an app.<br>
-Go to https://mafreebox.freebox.fr. If it's working, you are on your Freebox local network.
+To test if are on your Freebox local network, visit this page: https://mafreebox.freebox.fr. If it's working, you are on your Freebox local network.
 
-**Note:** You can not register an app using a remote HTTPS freebox server domain like `r42bhm9p.fbxos.fr`.
-
-<p align="center">
-  <br>
-    <img src="freebox.gif" width="500">
-    <br>
-    <i>Freebox server LCD screen to authorize your app access.</i>
-	<br>
-  <br>
-</p>
+**Note:** You can not register an app using a remote HTTPS freebox server domain like `https://r42bhm9p.fbxos.fr`.
 
 ```js
 const { FreeboxRegister } = require("freebox");
@@ -53,7 +48,7 @@ async function main() {
   });
 
   // Obtaining an app_token & everything you need
-  // https://dev.freebox.fr/sdk/os/login/
+  // following the guide at https://dev.freebox.fr/sdk/os/login/
   const access = await freeboxRegister.register();
 }
 
@@ -76,6 +71,15 @@ Save safely those following informations secret to connect to your Freebox API:
 
 */
 ```
+
+<p align="center">
+  <br>
+    <img src="freebox.gif" width="500">
+    <br>
+    <i>Freebox server LCD screen to authorize your app access.</i>
+	<br>
+  <br>
+</p>
 
 ### Login & request your Freebox server
 
