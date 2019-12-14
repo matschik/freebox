@@ -314,7 +314,7 @@ class Freebox {
         error_code,
         result: { challenge },
       } = data;
-      if (status === 403 && error_code === "auth_required") {
+      if (status === 403 && error_code === "auth_required" && this.headers["X-Fbx-App-Auth"]) {
         // Token has expired, we need to login
         await this.login(challenge);
       } else {
