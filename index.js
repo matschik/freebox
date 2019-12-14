@@ -232,7 +232,7 @@ class Freebox {
   }) {
     const validationErrors = [];
 
-    if (typeof api_domain !== "string" || app_token.length === 0) {
+    if (typeof api_domain !== "string" || api_domain.length === 0) {
       validationErrors.push(`api_domain must be a string not empty.`);
     }
 
