@@ -163,7 +163,7 @@ declare module FreeboxNodeJS {
     
     @returns `Object` Session
 		*/
-    login(): Session;
+    login(challenge?: string): Session;
 
     openSession(sessionStart: SessionStart): AxiosResponse;
 
