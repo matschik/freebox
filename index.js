@@ -306,13 +306,29 @@ class Freebox {
   }
 
   async request(requestConfig) {
-    const res = await this._getAxiosInstance().request(requestConfig);
-    return res;
+    await this._getAxiosInstance().request(requestConfig).then(res => {
+      return res;
+    }).catch(err => {
+      const { status, data } = err.response;
+      const {
+        error_code,
+        result: { challenge },
+      } = data;
+      if (status === 403 && error_code === "auth_required") {
+        // Token has expired, we need to login
+        await this.login(challenge);
+      } else {
+        throw err;
+      }
+    })
   }
 
-  async login() {
-    const challengeRes = await this.getChallenge();
-    const { challenge } = challengeRes.data.result;
+  async login(challenge) {
+    if (!challenge) {
+      const challengeRes = await this.getChallenge();
+      challenge = challengeRes.data.result.challenge;
+    }
+
     const sessionStart = {
       app_id: this.appId,
       app_version: typeof this.appVersion === "string" ? this.appVersion : null, // Optional
