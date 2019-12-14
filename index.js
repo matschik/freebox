@@ -306,8 +306,7 @@ class Freebox {
   }
 
   async request(requestConfig) {
-    const requestHandler = this._getAxiosInstance().request;
-    await requestHandler(requestConfig)
+    return this._getAxiosInstance().request(requestConfig)
       .then(res => {
         return res;
       })
@@ -321,6 +320,7 @@ class Freebox {
           status === 403 &&
           error_code === "auth_required" &&
           this.headers["X-Fbx-App-Auth"];
+
         if (!isTokenExpired) {
           throw error;
         }
@@ -329,7 +329,7 @@ class Freebox {
         await this.login(challenge);
 
         // Execute once again the initial request
-        await requestHandler(requestConfig);
+        return await this._getAxiosInstance().request(requestConfig);
       });
   }
 
