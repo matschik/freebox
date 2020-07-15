@@ -40,6 +40,8 @@ S27oDfFq04XSox7JM9HdTt2hLK96x1T7FpFrBTnALzb7vHv9MhXqAT90fPR/8A==
 -----END CERTIFICATE-----
 `;
 
+const httpsAgentConfig = { ca: FREEBOX_ROOT_CA, rejectUnauthorized: false };
+
 class FreeboxRegister {
   constructor({
     app_id,
@@ -67,9 +69,7 @@ class FreeboxRegister {
     this.baseURL = FREEBOX_LOCAL_URL;
     this.baseAPIURL = null;
     this.axiosInstance = axios.create({
-      httpsAgent: new https.Agent({
-        ca: FREEBOX_ROOT_CA,
-      }),
+      httpsAgent: new https.Agent(httpsAgentConfig),
     });
   }
 
@@ -289,9 +289,7 @@ class Freebox {
     };
 
     if (axiosConfig.baseURL.includes("https://")) {
-      axiosConfig.httpsAgent = new https.Agent({
-        ca: FREEBOX_ROOT_CA,
-      });
+      axiosConfig.httpsAgent = new https.Agent(httpsAgentConfig);
     }
 
     const axiosInstance = axios.create(axiosConfig);
@@ -304,6 +302,7 @@ class Freebox {
     try {
       response = await this._getAxiosInstance().request(requestConfig);
     } catch (error) {
+      console.log(error);
       const { status, data } = error.response;
       const {
         error_code,
