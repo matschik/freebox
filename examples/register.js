@@ -1,4 +1,4 @@
-const { FreeboxRegister } = require("../index");
+const { FreeboxRegister } = require("..");
 
 async function main() {
   const freeboxRegister = new FreeboxRegister({
@@ -10,7 +10,7 @@ async function main() {
 
   // Obtaining an app_token & everything you need
   // following the guide at https://dev.freebox.fr/sdk/os/login/
-  const access = await freeboxRegister.register();
+  await freeboxRegister.register();
 }
 
-main().catch((err) => console.error(err));
+main().catch((error) => console.error(error));

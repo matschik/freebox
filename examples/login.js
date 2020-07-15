@@ -1,4 +1,4 @@
-const { Freebox } = require("../");
+const { Freebox } = require("..");
 
 async function main() {
   const freebox = new Freebox({
@@ -29,4 +29,4 @@ async function main() {
   await freebox.logout();
 }
 
-main().catch((err) => console.error(err));
+main().catch((error) => console.error(error));
