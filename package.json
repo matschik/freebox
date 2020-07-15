@@ -17,6 +17,8 @@
   ],
   "scripts": {
     "test": "jest && xo",
+    "lint": "xo",
+    "lint:fix": "xo --fix",
     "format": "prettier --write \"**.js\""
   },
   "keywords": [
@@ -29,6 +31,7 @@
     "axios": "^0.19.0"
   },
   "devDependencies": {
+    "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.5",
     "jest": "^26.1.0",
     "prettier": "^2.0.5",
@@ -40,7 +43,8 @@
     "rules": {
       "camelcase": 0,
       "no-else-return": 0,
-      "no-async-promise-executor": 0
+      "no-async-promise-executor": 0,
+      "@typescript-eslint/no-unused-vars": 0
     },
     "overrides": [
       {

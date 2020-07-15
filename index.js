@@ -74,9 +74,9 @@ class FreeboxRegister {
   }
 
   async register({ silent = false } = {}) {
-    let discoveryRes;
+    let discoveryResponse;
     try {
-      discoveryRes = await this.discovery();
+      discoveryResponse = await this.discovery();
     } catch (error) {
       console.error(
         "\u001B[31m%s\u001B[0m",
@@ -90,14 +90,14 @@ class FreeboxRegister {
       https_port,
       api_base_url,
       api_version,
-    } = discoveryRes.data;
+    } = discoveryResponse.data;
 
     this.baseAPIURL = `${this.baseURL}${api_base_url}v${api_version
       .slice(0, 1)
       .trim()}`;
 
-    const res = await this.requestAuthorization(this.appIdentity);
-    const { app_token, track_id } = res.data.result;
+    const { data } = await this.requestAuthorization(this.appIdentity);
+    const { app_token, track_id } = data.result;
 
     if (!silent) {
       console.info(
@@ -128,28 +128,25 @@ class FreeboxRegister {
   }
 
   async request(requestConfig) {
-    const res = await this.axiosInstance.request(requestConfig);
-    return res;
+    return this.axiosInstance.request(requestConfig);
   }
 
   async discovery() {
-    const res = await this.request({
+    return this.request({
       method: "GET",
       baseURL: this.baseURL,
       url: "api_version",
     });
-    return res;
   }
 
   // Require to be connected to local freebox URL
   async requestAuthorization() {
-    const res = this.request({
+    return this.request({
       method: "POST",
       baseURL: this.baseAPIURL,
       url: "login/authorize",
       data: this.appIdentity,
     });
-    return res;
   }
 
   async getAuthorizationStatus(track_id) {
@@ -172,7 +169,7 @@ class FreeboxRegister {
             return true;
           } else if (status === "granted") {
             clearInterval(intervalTrackAuthorizationProgress);
-            return resolve(true);
+            resolve(true);
           } else {
             clearInterval(intervalTrackAuthorizationProgress);
             const endStatus = response.data.result.status;
@@ -209,12 +206,11 @@ class FreeboxRegister {
       throw new Error("track_id must be a string or a number not null");
     }
 
-    const res = this.request({
+    return this.request({
       method: "GET",
       baseURL: this.baseAPIURL,
       url: `login/authorize/${track_id}`,
     });
-    return res;
   }
 }
 
@@ -334,8 +330,8 @@ class Freebox {
 
   async login(challenge) {
     if (!challenge) {
-      const challengeRes = await this.getChallenge();
-      challenge = challengeRes.data.result.challenge;
+      const challengeResponse = await this.getChallenge();
+      challenge = challengeResponse.data.result.challenge;
     }
 
     const sessionStart = {
@@ -345,36 +341,33 @@ class Freebox {
         .update(challenge)
         .digest("hex"),
     };
-    const openSessionRes = await this.openSession(sessionStart);
-    const { session_token, permissions } = openSessionRes.data.result;
+    const openSessionResponse = await this.openSession(sessionStart);
+    const { session_token, permissions } = openSessionResponse.data.result;
     this.headers["X-Fbx-App-Auth"] = session_token;
     this._getAxiosInstance(true); // Must update axios instance cache
     return { session_token, permissions };
   }
 
   async openSession(sessionStart) {
-    const res = this.request({
+    return this.request({
       method: "POST",
       url: "login/session",
       data: sessionStart,
     });
-    return res;
   }
 
   async getChallenge() {
-    const res = this.request({
+    return this.request({
       method: "GET",
       url: "login",
     });
-    return res;
   }
 
   async logout() {
-    const res = this.request({
+    return this.request({
       method: "POST",
       url: "login/logout",
     });
-    return res;
   }
 }
 
