@@ -48,9 +48,7 @@ class FreeboxRegister {
     device_name = "NodeJS",
   } = {}) {
     // Generate defaults required
-    const suffixId = `_${Math.random()
-      .toString(36)
-      .slice(2, 9)}`;
+    const suffixId = `_${Math.random().toString(36).slice(2, 9)}`;
 
     if (!app_name && !app_id) {
       app_name = `nodejs_app${suffixId}`;
