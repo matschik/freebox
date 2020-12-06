@@ -302,7 +302,6 @@ class Freebox {
 		try {
 			response = await this._getAxiosInstance().request(requestConfig);
 		} catch (error) {
-			console.log(error);
 			const {status, data} = error.response;
 			const {
 				error_code,
@@ -314,6 +313,7 @@ class Freebox {
 				this.headers['X-Fbx-App-Auth'];
 
 			if (!isTokenExpired) {
+				console.log(error);
 				throw error;
 			}
 
