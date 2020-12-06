@@ -313,7 +313,6 @@ class Freebox {
 				this.headers['X-Fbx-App-Auth'];
 
 			if (!isTokenExpired) {
-				console.log(error);
 				throw error;
 			}
 
