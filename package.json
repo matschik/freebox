@@ -18,8 +18,7 @@
   "scripts": {
     "test": "jest && xo",
     "lint": "xo",
-    "lint:fix": "xo --fix",
-    "format": "prettier --write \"**.js\""
+    "lint:fix": "xo --fix"
   },
   "keywords": [
     "freebox",
