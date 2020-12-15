@@ -302,6 +302,10 @@ class Freebox {
 		try {
 			response = await this._getAxiosInstance().request(requestConfig);
 		} catch (error) {
+			if (!error.response) {
+				throw error;
+			}
+
 			const {status, data} = error.response;
 			const {
 				error_code,
