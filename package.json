@@ -34,7 +34,7 @@
     "jest": "^27.0.1",
     "lint-staged": "^10.5.3",
     "prettier": "^2.2.1",
-    "xo": "^0.36.1"
+    "xo": "^0.44.0"
   },
   "xo": {
     "prettier": true,
