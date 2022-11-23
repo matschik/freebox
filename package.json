@@ -27,7 +27,7 @@
     "freeboxos"
   ],
   "dependencies": {
-    "axios": "^0.24.0"
+    "axios": "^1.2.0"
   },
   "devDependencies": {
     "husky": "^7.0.4",
