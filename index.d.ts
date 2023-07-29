@@ -1,7 +1,11 @@
-import {AxiosRequestConfig, AxiosResponse, AxiosError} from 'axios';
+import {
+	type AxiosRequestConfig,
+	type AxiosResponse,
+	type AxiosError,
+} from 'axios';
 
 declare namespace FreeboxNodeJS {
-	interface AppIdentity {
+	type AppIdentity = {
 		/**
     A unique `app_id` string.
     
@@ -29,24 +33,24 @@ declare namespace FreeboxNodeJS {
     @default 'NodeJS'
 		*/
 		device_name?: string;
-	}
+	};
 
-	interface RegisterOptions {
+	type RegisterOptions = {
 		/**
     Prevent logging to console.
     
     @default  false
 		*/
 		silent?: boolean;
-	}
+	};
 
-	interface SessionStart {
+	type SessionStart = {
 		app_id: string;
 		app_version?: string;
 		password: string;
-	}
+	};
 
-	interface AppRegistered {
+	type AppRegistered = {
 		/**
     Unique `app_token` provided after authorizing the app via `FreeboxRegister` class.
     This token has been associated with a set of default permissions.
@@ -86,17 +90,17 @@ declare namespace FreeboxNodeJS {
     Same `app_version` used in TokenRequest (using `FreeboxRegister` class) to get the `app_token`.
 		*/
 		app_version?: string;
-	}
+	};
 
-	interface Session {
+	type Session = {
 		/**
     A `session_token` is a combination of app_token and a challenge to open a session
     */
 		session_token: string;
 		permissions: Permissions;
-	}
+	};
 
-	interface Permissions {
+	type Permissions = {
 		/**
     Allow modifying the Freebox settings (reading settings is always allowed).
 		*/
@@ -128,7 +132,7 @@ declare namespace FreeboxNodeJS {
 		parental?: boolean;
 
 		pvr?: boolean;
-	}
+	};
 
 	class FreeboxRegister {
 		constructor(appIdentity?: AppIdentity);

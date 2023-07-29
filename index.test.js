@@ -1,4 +1,5 @@
-const {FreeboxRegister} = require('.');
+import {describe, expect, test} from 'vitest';
+import {FreeboxRegister} from './index.js';
 
 describe('FreeboxRegister default instance', () => {
 	const freeboxRegister = new FreeboxRegister();
@@ -25,7 +26,7 @@ describe('FreeboxRegister user custom config', () => {
 		app_id: 'fbx.my_amazing_app',
 		app_name: 'My Amazing App',
 		app_version: '1.0.0',
-		device_name: 'My cool PC'
+		device_name: 'My cool PC',
 	});
 
 	test('this.appIdentity is equal to constructor config', () => {
@@ -33,7 +34,7 @@ describe('FreeboxRegister user custom config', () => {
 			app_id: 'fbx.my_amazing_app',
 			app_name: 'My Amazing App',
 			app_version: '1.0.0',
-			device_name: 'My cool PC'
+			device_name: 'My cool PC',
 		});
 	});
 });

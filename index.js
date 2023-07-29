@@ -1,6 +1,6 @@
-const https = require('https');
-const {createHmac} = require('crypto');
-const axios = require('axios');
+import https from 'node:https';
+import {createHmac} from 'node:crypto';
+import axios from 'axios';
 
 const FREEBOX_LOCAL_URL = 'https://mafreebox.freebox.fr';
 
@@ -42,12 +42,12 @@ S27oDfFq04XSox7JM9HdTt2hLK96x1T7FpFrBTnALzb7vHv9MhXqAT90fPR/8A==
 
 const httpsAgentConfig = {ca: FREEBOX_ROOT_CA, rejectUnauthorized: false};
 
-class FreeboxRegister {
+export class FreeboxRegister {
 	constructor({
 		app_id,
 		app_name,
 		app_version = '1.0.0',
-		device_name = 'NodeJS'
+		device_name = 'NodeJS',
 	} = {}) {
 		// Generate defaults required
 		const suffixId = `_${Math.random().toString(36).slice(2, 9)}`;
@@ -69,7 +69,7 @@ class FreeboxRegister {
 		this.baseURL = FREEBOX_LOCAL_URL;
 		this.baseAPIURL = null;
 		this.axiosInstance = axios.create({
-			httpsAgent: new https.Agent(httpsAgentConfig)
+			httpsAgent: new https.Agent(httpsAgentConfig),
 		});
 	}
 
@@ -80,17 +80,13 @@ class FreeboxRegister {
 		} catch (error) {
 			console.error(
 				'\u001B[31m%s\u001B[0m',
-				`Error: You are probably not connected to your Freebox network (check "${FREEBOX_LOCAL_URL}").`
+				`Error: You are probably not connected to your Freebox network (check "${FREEBOX_LOCAL_URL}").`,
 			);
 			throw error;
 		}
 
-		const {
-			api_domain,
-			https_port,
-			api_base_url,
-			api_version
-		} = discoveryResponse.data;
+		const {api_domain, https_port, api_base_url, api_version} =
+			discoveryResponse.data;
 
 		this.baseAPIURL = `${this.baseURL}${api_base_url}v${api_version
 			.slice(0, 1)
@@ -102,7 +98,7 @@ class FreeboxRegister {
 		if (!silent) {
 			console.info(
 				'\u001B[36m%s\u001B[0m',
-				`Please check your Freebox Server LCD screen and authorize application access to register your app.`
+				`Please check your Freebox Server LCD screen and authorize application access to register your app.`,
 			);
 		}
 
@@ -113,13 +109,13 @@ class FreeboxRegister {
 			api_domain,
 			https_port,
 			api_base_url,
-			api_version
+			api_version,
 		};
 
 		if (!silent) {
 			console.info(
 				'\u001B[32m%s\u001B[0m',
-				`Your app has been granted access !\nSave safely those following informations secret to connect to your Freebox API:`
+				`Your app has been granted access !\nSave safely those following informations secret to connect to your Freebox API:`,
 			);
 			console.info(access);
 		}
@@ -135,7 +131,7 @@ class FreeboxRegister {
 		return this.request({
 			method: 'GET',
 			baseURL: this.baseURL,
-			url: 'api_version'
+			url: 'api_version',
 		});
 	}
 
@@ -145,7 +141,7 @@ class FreeboxRegister {
 			method: 'POST',
 			baseURL: this.baseAPIURL,
 			url: 'login/authorize',
-			data: this.appIdentity
+			data: this.appIdentity,
 		});
 	}
 
@@ -156,13 +152,13 @@ class FreeboxRegister {
 			timeout:
 				'The user did not confirmed the authorization within the given time',
 			granted: 'The app_token is valid and can be used to open a session',
-			denied: 'The user denied the authorization request'
+			denied: 'The user denied the authorization request',
 		};
-		const self = this;
+
 		return new Promise(async (resolve, reject) => {
-			async function checkTrackAuthorizationProgress() {
+			const checkTrackAuthorizationProgress = async () => {
 				try {
-					const response = await self.trackAuthorizationProgress(track_id);
+					const response = await this.trackAuthorizationProgress(track_id);
 					const {status} = response.data.result;
 
 					if (status === 'pending') {
@@ -173,27 +169,27 @@ class FreeboxRegister {
 					} else {
 						clearInterval(intervalTrackAuthorizationProgress);
 						const endStatus = response.data.result.status;
-						const errData = response.data;
+						const errorData = response.data;
 						// @TODO
 						reject(
 							new Error(
 								`${authorizationStatus[endStatus]}: \n ${JSON.stringify(
-									errData,
+									errorData,
 									null,
-									2
-								)}`
-							)
+									2,
+								)}`,
+							),
 						);
 					}
 				} catch (error) {
 					clearInterval(intervalTrackAuthorizationProgress);
 					reject(error);
 				}
-			}
+			};
 
 			const intervalTrackAuthorizationProgress = setInterval(
 				checkTrackAuthorizationProgress,
-				2 * 1000
+				2 * 1000,
 			);
 		});
 	}
@@ -209,12 +205,12 @@ class FreeboxRegister {
 		return this.request({
 			method: 'GET',
 			baseURL: this.baseAPIURL,
-			url: `login/authorize/${track_id}`
+			url: `login/authorize/${track_id}`,
 		});
 	}
 }
 
-class Freebox {
+export class Freebox {
 	constructor({
 		app_token,
 		api_domain = FREEBOX_LOCAL_URL,
@@ -222,7 +218,7 @@ class Freebox {
 		api_base_url = '/api/',
 		api_version,
 		app_id,
-		app_version // Optional to open session
+		app_version, // Optional to open session
 	}) {
 		const validationErrors = [];
 
@@ -232,25 +228,25 @@ class Freebox {
 
 		if (typeof app_token !== 'string' || app_token.length === 0) {
 			validationErrors.push(
-				`app_token is required and must be a string not empty.`
+				`app_token is required and must be a string not empty.`,
 			);
 		}
 
 		if (typeof api_base_url !== 'string' || api_base_url.length === 0) {
 			validationErrors.push(
-				`api_base_url is required and must be a string not empty`
+				`api_base_url is required and must be a string not empty`,
 			);
 		}
 
 		if (typeof api_version !== 'string' || api_version.length === 0) {
 			validationErrors.push(
-				`api_version is required and must be a string not empty`
+				`api_version is required and must be a string not empty`,
 			);
 		}
 
 		if (typeof app_id !== 'string' || app_id.length === 0) {
 			validationErrors.push(
-				`app_id is required and must be a string not empty`
+				`app_id is required and must be a string not empty`,
 			);
 		}
 
@@ -259,8 +255,8 @@ class Freebox {
 				`Validation errors in Freebox constructor args: \n ${JSON.stringify(
 					validationErrors,
 					null,
-					2
-				)}`
+					2,
+				)}`,
 			);
 		}
 
@@ -285,7 +281,7 @@ class Freebox {
 		// https://engineering.circle.com/https-authorized-certs-with-node-js-315e548354a2
 		const axiosConfig = {
 			baseURL: this.baseAPIURL,
-			headers: this.headers
+			headers: this.headers,
 		};
 
 		if (axiosConfig.baseURL.includes('https://')) {
@@ -309,7 +305,7 @@ class Freebox {
 			const {status, data} = error.response;
 			const {
 				error_code,
-				result: {challenge}
+				result: {challenge},
 			} = data;
 			const isTokenExpired =
 				status === 403 &&
@@ -341,7 +337,7 @@ class Freebox {
 			app_version: typeof this.appVersion === 'string' ? this.appVersion : null, // Optional
 			password: createHmac('sha1', this.appToken)
 				.update(challenge)
-				.digest('hex')
+				.digest('hex'),
 		};
 		const openSessionResponse = await this.openSession(sessionStart);
 		const {session_token, permissions} = openSessionResponse.data.result;
@@ -354,28 +350,21 @@ class Freebox {
 		return this.request({
 			method: 'POST',
 			url: 'login/session',
-			data: sessionStart
+			data: sessionStart,
 		});
 	}
 
 	async getChallenge() {
 		return this.request({
 			method: 'GET',
-			url: 'login'
+			url: 'login',
 		});
 	}
 
 	async logout() {
 		return this.request({
 			method: 'POST',
-			url: 'login/logout'
+			url: 'login/logout',
 		});
 	}
 }
-
-module.exports = {
-	FreeboxRegister,
-	Freebox
-};
-
-module.exports.default = Freebox;
