@@ -155,7 +155,7 @@ export class FreeboxRegister {
 			denied: 'The user denied the authorization request',
 		};
 
-		return new Promise(async (resolve, reject) => {
+		return new Promise((resolve, reject) => {
 			const checkTrackAuthorizationProgress = async () => {
 				try {
 					const response = await this.trackAuthorizationProgress(track_id);
@@ -163,7 +163,9 @@ export class FreeboxRegister {
 
 					if (status === 'pending') {
 						return true;
-					} else if (status === 'granted') {
+					}
+
+					if (status === 'granted') {
 						clearInterval(intervalTrackAuthorizationProgress);
 						resolve(true);
 					} else {

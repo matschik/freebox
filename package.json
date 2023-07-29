@@ -39,18 +39,7 @@
   "xo": {
     "prettier": true,
     "rules": {
-      "camelcase": 0,
-      "no-else-return": 0,
-      "no-async-promise-executor": 0,
-      "@typescript-eslint/no-unused-vars": 0
-    },
-    "overrides": [
-      {
-        "files": "test.js",
-        "rules": {
-          "no-undef": 0
-        }
-      }
-    ]
+      "camelcase": 0
+    }
   }
 }
