@@ -9,7 +9,7 @@
     "email": "mathieu.schimmerling@protonmail.com"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=16"
   },
   "files": [
     "index.js",
