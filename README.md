@@ -1,4 +1,4 @@
-# Freebox for Node.js 
+# Freebox for Node.js
 
 > Simple authentication and secure requests to your Freebox OS server
 
@@ -11,11 +11,7 @@ From Freebox OS API documentation (https://dev.freebox.fr/sdk/os), register and 
 ## Install
 
 ```sh
-# Using npm
 $ npm install freebox
-
-# Using yarn
-$ yarn add freebox
 ```
 
 ## Usage
@@ -52,7 +48,7 @@ async function main() {
   const access = await freeboxRegister.register();
 }
 
-main().catch(err => console.error(err));
+main().catch((err) => console.error(err));
 
 /*
 
@@ -113,7 +109,7 @@ async function main() {
   await freebox.logout();
 }
 
-main().catch(err => console.error(err));
+main().catch((err) => console.error(err));
 ```
 
 ## API: FreeboxRegister
