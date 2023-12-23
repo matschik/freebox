@@ -264,7 +264,7 @@ export class Freebox {
 
 		this.baseAPIURL = `https://${api_domain}${
 			https_port ? ':' + https_port : ''
-		}${api_base_url}v${api_version.slice(0, 1).trim()}`;
+		}${api_base_url}v${api_version.split('.').shift().trim()}`;
 
 		this.appToken = app_token;
 		this.appVersion = app_version;
