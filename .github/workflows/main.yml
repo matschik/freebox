@@ -5,21 +5,18 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x, 18.x, 20.x]
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm install -g pnpm # Install pnpm
-      - run: pnpm install # Install dependencies
-      - run: pnpm test # Run tests
+  unit-test:
+    uses: sxzz/workflows/.github/workflows/unit-test.yml@v1.1.1
+    with:
+      node-versions: '24'
+      typecheck: pnpm exec tsc --noEmit

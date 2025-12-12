@@ -1,6 +1,6 @@
 {
   "name": "freebox",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Simple authentification and secure requests to your Freebox OS server",
   "license": "MIT",
   "repository": "github:matschik/freebox",
@@ -8,17 +8,34 @@
     "name": "Mathieu Schimmerling",
     "email": "mathieu.schimmerling@protonmail.com"
   },
+  "type": "module",
+  "packageManager": "pnpm@10.20.0",
   "engines": {
-    "node": ">=16"
+    "node": ">=24.0.0"
   },
   "files": [
-    "index.js",
-    "index.d.ts"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "vitest run && xo",
-    "lint": "xo",
-    "lint:fix": "xo --fix"
+    "build": "tsdown --config tsdown.config.ts",
+    "test": "vitest run",
+    "lint": "oxlint",
+    "format": "oxfmt .",
+    "prepare": "lefthook install",
+    "ensure": "pnpm run lint && pnpm run test && pnpm run build"
   },
   "keywords": [
     "freebox",
@@ -27,19 +44,16 @@
     "freeboxos"
   ],
   "dependencies": {
-    "axios": "^1.4.0"
+    "undici": "^7.16.0"
   },
   "devDependencies": {
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.3",
-    "prettier": "^3.0.0",
-    "vitest": "^0.33.0",
-    "xo": "^0.55.0"
-  },
-  "xo": {
-    "prettier": true,
-    "rules": {
-      "camelcase": 0
-    }
+    "@types/node": "^25.0.1",
+    "lefthook": "^2.0.9",
+    "msw": "^2.12.4",
+    "oxfmt": "^0.17.0",
+    "oxlint": "^1.32.0",
+    "tsdown": "^0.17.3",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.15"
   }
 }
