@@ -2,7 +2,7 @@
 
 > Simple authentication and secure requests to your Freebox OS server
 
-- Node.js 20.18.1+ (ESM-first)
+- Node.js 24+ (ESM-first)
 - Native `fetch` for HTTP (no Axios dependency)
 - Written in TypeScript with generated typings
 - Bundled with tsdown (ESM + CJS + `.d.ts`)
