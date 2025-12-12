@@ -84,10 +84,21 @@ describe("Freebox integration with mocked Freebox OS", () => {
     let wifiCallCount = 0;
 
     server.use(
+      http.get(`${baseApiUrl}/login`, () =>
+        HttpResponse.json({
+          success: true,
+          result: { challenge: "initial-challenge" },
+        }),
+      ),
       http.post(`${baseApiUrl}/login/session`, async ({ request }) => {
         sessionCallCount += 1;
         const body = (await request.json()) as Record<string, unknown>;
         expect(body.app_id).toBe("fbx.integration.test");
+        expect(body.password).toBe(
+          sessionCallCount === 1
+            ? "6d1f4bb0a490db5b514c2bb7f431d6dc481c9be3"
+            : "69bb3578f4db4e463c2dfcd597f20ee092a77c42",
+        );
 
         const token =
           sessionTokens[Math.min(sessionCallCount - 1, sessionTokens.length - 1)] ??
@@ -131,7 +142,7 @@ describe("Freebox integration with mocked Freebox OS", () => {
       api_version: "7.0",
     });
 
-    await freebox.login("initial-challenge");
+    await freebox.login();
     const response = await freebox.request({ method: "GET", url: "wifi/config" });
 
     expect(response.data).toEqual({

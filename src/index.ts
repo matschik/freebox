@@ -268,7 +268,12 @@ export class FreeboxRegister {
     const { api_domain, https_port, api_base_url, api_version } =
       (discoveryResponse.data as any).result ?? discoveryResponse.data ?? {};
 
-    this.baseAPIURL = `${this.baseURL}${api_base_url}v${api_version.toString().slice(0, 1).trim()}`;
+    const majorVersion = api_version.toString().split(".").shift()?.trim();
+    if (!majorVersion) {
+      throw new Error(`Invalid api_version "${api_version}" returned by Freebox discovery`);
+    }
+
+    this.baseAPIURL = `${this.baseURL}${api_base_url}v${majorVersion}`;
 
     const { data } = await this.requestAuthorization(this.appIdentity);
     const { app_token, track_id } = (data as any).result ?? data;
@@ -491,17 +496,22 @@ export class Freebox {
   }
 
   async login(challenge?: string): Promise<Session> {
-    if (!challenge) {
+    let resolvedChallenge = challenge;
+
+    if (!resolvedChallenge) {
       const challengeResponse = await this.getChallenge();
-      challenge = (challengeResponse.data as any).result.challenge;
-      throw new Error("Missing challenge to open a session");
+      resolvedChallenge = (challengeResponse.data as any).result?.challenge;
+
+      if (!resolvedChallenge) {
+        throw new Error("Unable to retrieve challenge to open a session");
+      }
     }
 
     const sessionStart: SessionStart = {
       app_id: this.appId,
       app_version: typeof this.appVersion === "string" ? this.appVersion : null,
       password: createHmac("sha1", this.appToken)
-        .update(challenge)
+        .update(resolvedChallenge)
         .digest("hex"),
     };
     const openSessionResponse = await this.openSession(sessionStart);
