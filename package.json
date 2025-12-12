@@ -1,6 +1,6 @@
 {
   "name": "freebox",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Simple authentification and secure requests to your Freebox OS server",
   "license": "MIT",
   "repository": "github:matschik/freebox",
@@ -34,7 +34,8 @@
     "test": "vitest run",
     "lint": "oxlint",
     "format": "oxfmt .",
-    "prepare": "lefthook install"
+    "prepare": "lefthook install",
+    "ensure": "pnpm run lint && pnpm run test && pnpm run build"
   },
   "keywords": [
     "freebox",
